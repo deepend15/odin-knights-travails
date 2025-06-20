@@ -1,1 +1,1 @@
-# odin-knights-travails
+The purpose of this project is to create a function, `knightMoves`, that shows the shortest possible way for a Knight, in the game of Chess, to get from one square to another. Completion of this project will demonstrate an understanding of data structures and search algorithms.
