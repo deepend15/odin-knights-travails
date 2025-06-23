@@ -1,8 +1,18 @@
 const xAxis = 8;
 const yAxis = 8;
 
+function outOfBounds([x, y]) {
+  if (x < 0 || x >= xAxis || y < 0 || y >= yAxis) {
+    return true;
+  }
+}
+
 class LinkedList {
-  constructor(x = null, y = null) {
+  constructor(x, y) {
+    if (outOfBounds([x, y])) {
+        throw new Error("Invalid square.");
+    }
+
     this.value = [x, y];
     this.nextSquare = null;
 
@@ -54,10 +64,10 @@ class LinkedList {
     }
   };
 
-    head() {
-      if (!this.value) return null;
-      else return this;
-    }
+  head() {
+    if (!this.value) return null;
+    else return this;
+  }
 
   tail() {
     if (!this.value) return null;
@@ -93,12 +103,6 @@ class LinkedList {
 }
 
 function knightMoves(startingSquare, endingSquare) {
-  function outOfBounds([x, y]) {
-    if (x < 0 || x >= xAxis || y < 0 || y >= yAxis) {
-      return true;
-    }
-  }
-
   if (
     startingSquare[0] === endingSquare[0] &&
     startingSquare[1] === endingSquare[1]
@@ -111,8 +115,6 @@ function knightMoves(startingSquare, endingSquare) {
   }
 
   // code here
-
-  
 }
 
 let startingSquare = new LinkedList(3, 3);
