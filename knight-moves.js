@@ -2,7 +2,7 @@ const xAxis = 8;
 const yAxis = 8;
 
 function outOfBounds([x, y]) {
-  if (x < 0 || x >= xAxis || y < 0 || y >= yAxis) {
+  if (!(0 <= x && x < xAxis && 0 <= y && y < yAxis)) {
     return true;
   }
 }
@@ -10,7 +10,7 @@ function outOfBounds([x, y]) {
 class LinkedList {
   constructor(x, y) {
     if (outOfBounds([x, y])) {
-        throw new Error("Invalid square.");
+      throw new Error("Invalid square.");
     }
 
     this.value = [x, y];
@@ -65,30 +65,21 @@ class LinkedList {
   };
 
   head() {
-    if (!this.value) return null;
-    else return this;
+    return this;
   }
 
   tail() {
-    if (!this.value) return null;
-    else {
-      let currentSquare = this;
-      while (currentSquare.nextSquare !== null) {
-        currentSquare = currentSquare.nextSquare;
-      }
-      return currentSquare;
+    let currentSquare = this;
+    while (currentSquare.nextSquare !== null) {
+      currentSquare = currentSquare.nextSquare;
     }
+    return currentSquare;
   }
 
   append(x, y) {
-    if (!this.value) {
-      this.value = [x, y];
-      this.nextSquare = null;
-    } else {
-      const newSquare = new LinkedList.Square(x, y);
-      const tail = this.tail();
-      tail.nextSquare = newSquare;
-    }
+    const newSquare = new LinkedList.Square(x, y);
+    const tail = this.tail();
+    tail.nextSquare = newSquare;
   }
 
   possibleMoves() {
@@ -103,15 +94,15 @@ class LinkedList {
 }
 
 function knightMoves(startingSquare, endingSquare) {
+  if (outOfBounds(startingSquare) || outOfBounds(endingSquare)) {
+    throw new Error("One or both of your inputted squares is invalid.");
+  }
+
   if (
     startingSquare[0] === endingSquare[0] &&
     startingSquare[1] === endingSquare[1]
   ) {
     return 0;
-  }
-
-  if (outOfBounds(startingSquare) || outOfBounds(endingSquare)) {
-    throw new Error("One or both of your inputted squares is invalid.");
   }
 
   // code here
