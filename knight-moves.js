@@ -64,10 +64,6 @@ class LinkedList {
     }
   };
 
-  head() {
-    return this;
-  }
-
   tail() {
     let currentSquare = this;
     while (currentSquare.nextSquare !== null) {
@@ -82,7 +78,7 @@ class LinkedList {
     tail.nextSquare = newSquare;
   }
 
-  possibleMoves() {
+  adjacentVertices() {
     const arr = [];
     let currentSquare = this.nextSquare;
     while (currentSquare !== null) {
@@ -102,12 +98,53 @@ function knightMoves(startingSquare, endingSquare) {
     startingSquare[0] === endingSquare[0] &&
     startingSquare[1] === endingSquare[1]
   ) {
-    return 0;
+    console.log(`You made it in 0 moves! Here's your path:`);
+    console.log(startingSquare);
+    console.log(endingSquare);
+    return;
   }
 
-  // code here
+  const queue = [];
+
+  const squareStart = new LinkedList(startingSquare[0], startingSquare[1]);
+  const startingAdjacentVertices = squareStart.adjacentVertices();
+
+  for (const vertex of startingAdjacentVertices) {
+    queue.push({
+      path: [[startingSquare[0], startingSquare[1]]],
+      level: 1,
+      value: vertex,
+    });
+  }
+
+  while (queue.length !== 0) {
+    const evalSquare = queue[0];
+    if (
+      evalSquare.value[0] === endingSquare[0] &&
+      evalSquare.value[1] === endingSquare[1]
+    ) {
+      evalSquare.path.push(evalSquare.value);
+      let moves;
+      if (evalSquare.level === 1) moves = 'move';
+      else moves = 'moves';
+      console.log(
+        `You made it in ${evalSquare.level} ${moves}! Here's your path:`
+      );
+      evalSquare.path.forEach((vertex) => console.log(vertex));
+      return;
+    }
+    const newSquare = new LinkedList(evalSquare.value[0], evalSquare.value[1]);
+    const newSquareVertices = newSquare.adjacentVertices();
+    for (const vertex of newSquareVertices) {
+      const newPath = evalSquare.path.slice();
+      newPath.push(evalSquare.value);
+      const newLevel = evalSquare.level + 1;
+      queue.push({ path: newPath, level: newLevel, value: vertex });
+    }
+    queue.shift();
+  }
 }
 
-let startingSquare = new LinkedList(3, 3);
-let possibleMoves = startingSquare.possibleMoves();
-console.log(possibleMoves);
+knightMoves([5, 4], [6, 6]);
+knightMoves([3, 3], [4, 3]);
+knightMoves([0, 0], [7, 7]);
